@@ -107,5 +107,46 @@ class Piece(pg.sprite.Sprite):
     # return the piece's type
     def getType(self):
         return self.type
+    
+    # given a piece, promote it to the piece specified by type.
+    # "q" for queen, "b" for bishop, "r" for rook, "n" for knight.
+    # Raise an exception if the piece is not a pawn or the type is not valid.
+    def promote(self, type):
+        assert(self.type == "P" or self.type == "p")
+        if (type == "q"):
+            if (self.type == "p"):
+                self.type = "q"
+                self.image = BQ
+            else:
+                self.type = "Q"
+                self.image = WQ
 
+        elif (type == "b"):
+            if (self.type == "p"):
+                self.type = "b"
+                self.image = BB
+            else:
+                self.type = "B"
+                self.image = WB
+
+        elif (type == "r"):
+            if (self.type == "p"):
+                self.type = "r"
+                self.image = BR
+            else:
+                self.type = "R"
+                self.image = WR
+
+        elif (type == "n"):
+            if (self.type == "p"):
+                self.type = "n"
+                self.image = BN
+            else:
+                self.type = "N"
+                self.image = WN
+
+        else:
+            raise ValueError("type is not valid.")
+
+        
     

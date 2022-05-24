@@ -1,4 +1,7 @@
+from tracemalloc import start
 from piece import Piece
+import pygame_menu as pgm
+import menus
 from FENreader import FENreader
 from constants import *
 import pygame as pg
@@ -26,7 +29,7 @@ class DisplayBoard:
             boardSq.append(column)
         self.rects = boardSq
 
-        # orientation of the board, add functionality later
+        # orientation of the board
         self.whiteOnBottom = True
     
     # method to convert string coordinates (ex. "a1") to indices 
@@ -68,20 +71,59 @@ class DisplayBoard:
             piece.update(newKey[0], newKey[1])
             newPieceMap[newKey] = piece
         self.pieceMap = newPieceMap
-
-
     
     # Assumes that all moves are legal.
-    # Takes in two string coordinates ("ex. a5, b2") and executes
-    # the given move on the board, updating the positions of the pieces.
-    def movePiece(self, startSquare, endSquare, isPromotion=False,
-                  isCastling=False, isEnPassant=False):
+    # Takes in two string coordinates ("ex. a5, b2") and special move
+    # indicators and executes the given move on the board, 
+    # updating the positions of the pieces.
+    def movePiece(self, startSquare, endSquare, 
+                  isPromotion, isCastling, isEnPassant):
         startIndices = self.strToIndices(startSquare)
         endIndices = self.strToIndices(endSquare)
-        piece = self.pieceMap[startIndices]
-        piece.update(endIndices[0], endIndices[1])
-        self.pieceMap[endIndices] = piece
-        del self.pieceMap[startIndices]
+
+        # Move is a pawn promotion
+        if (isPromotion != ""):
+            # Handle the promotion 
+            piece = self.pieceMap[startIndices]
+            piece.promote(isPromotion)
+            piece.update(endIndices[0], endIndices[1])
+            self.pieceMap[endIndices] = piece
+            del self.pieceMap[startIndices]
+
+        # Move is castling
+        elif (isCastling):
+            king = self.pieceMap[startIndices]
+            del self.pieceMap[startIndices]
+            # king is castling right
+            if (startIndices[0] < endIndices[0]):
+                king.update(startIndices[0] + 2, startIndices[1])
+                self.pieceMap[(startIndices[0] + 2, startIndices[1])] = king
+                rook = self.pieceMap[(7, startIndices[1])]
+                del self.pieceMap[(7, startIndices[1])]
+                rook.update(endIndices[0] - 1, startIndices[1])
+                self.pieceMap[(endIndices[0] - 1, startIndices[1])] = rook
+                
+            # king is castling left
+            else:
+                king.update(startIndices[0] - 2, startIndices[1])
+                self.pieceMap[(startIndices[0] - 2, startIndices[1])] = king
+                rook = self.pieceMap[(0, startIndices[1])]
+                del self.pieceMap[(0, startIndices[1])]
+
+                rook.update(endIndices[0] + 1, startIndices[1])
+                self.pieceMap[(endIndices[0] + 1, startIndices[1])] = rook
+
+        # Move is en passant
+        elif (isEnPassant):
+            print("I need to implement en passant!")
+
+
+        # Move is a normal move
+        else:
+            piece = self.pieceMap[startIndices]
+            piece.update(endIndices[0], endIndices[1])
+            self.pieceMap[endIndices] = piece
+            del self.pieceMap[startIndices]
 
 # a bit of testing code
 def main():
