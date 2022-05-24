@@ -25,8 +25,23 @@ class Game:
         # UNIVERSAL convention: top left is (0,0), top middle is (4,0), bottom
         # right is (7,7)
         return ((x // SQUARE_LENGTH) - 1, (y // SQUARE_LENGTH) - 1)
+
+    # return the piece to its original square
+    def returnPiece(self):
+        self.heldPiece.update(self.heldPieceX, self.heldPieceY)
+        self.heldPiece = None
+        self.heldPieceX = None
+        self.heldPieceY = None
     
     def checkEvents(self):
+        # have stockfish make a move
+        if (self.turn == False):
+            result = self.engine.play(self.board, chess.engine.Limit(time=1))
+            self.board.push(result.move)
+            move = result.move.uci()
+            self.displayBoard.movePiece(move[0:2], move[2:4])
+            self.turn = True
+
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 self.running = False
@@ -59,11 +74,16 @@ class Game:
                     
                     # if a piece is held, either:
                     else:
-                        # play a move if destination square is valid
                         startCoords = self.displayBoard.indicesToStr(
                             self.heldPieceX, self.heldPieceY)
                         endCoords = self.displayBoard.indicesToStr(
                             squareIndices[0], squareIndices[1])
+
+                        # if startSq = endSq, put down the piece
+                        if startCoords != endCoords:
+                            self.returnPiece()
+
+                        # play a move if destination square is valid
                         move = chess.Move.from_uci(startCoords + endCoords)
                         if move in self.board.legal_moves:
                             self.heldPiece = None
@@ -72,14 +92,10 @@ class Game:
                             self.displayBoard.movePiece(startCoords, endCoords)
                             self.board.push(move)
                             self.turn = False
-                            # self.stockfish.make_moves_from_current_position()
 
                         # put down the piece if destination square is invalid
                         else:
-                            self.heldPiece.update(self.heldPieceX, self.heldPieceY)
-                            self.heldPiece = None
-                            self.heldPieceX = None
-                            self.heldPieceY = None
+                            self.returnPiece()
             
             # if a piece is held, it moves with the mouse cursor
             if event.type == pg.MOUSEMOTION:
@@ -99,6 +115,8 @@ class OnePlayer(Game):
         self.player = True # True for white, False for black
 
         self.engine = chess.engine.SimpleEngine.popen_uci("stockfish")
+        self.engineMove = None
+
 
     # game loop
     def runGame(self):
@@ -106,10 +124,6 @@ class OnePlayer(Game):
         while self.running:
             # check events
             self.checkEvents()
-
-            # have stockfish make a move
-            # if (self.turn == False)
-
     
             # draw background
             self.window.fill((32, 32, 32))

@@ -74,7 +74,8 @@ class DisplayBoard:
     # Assumes that all moves are legal.
     # Takes in two string coordinates ("ex. a5, b2") and executes
     # the given move on the board, updating the positions of the pieces.
-    def movePiece(self, startSquare, endSquare):
+    def movePiece(self, startSquare, endSquare, isPromotion: False,
+                  isCastling: False, isEnPassant: False):
         startIndices = self.strToIndices(startSquare)
         endIndices = self.strToIndices(endSquare)
         piece = self.pieceMap[startIndices]
