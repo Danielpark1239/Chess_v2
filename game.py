@@ -187,7 +187,13 @@ class Game:
     def checkTermination(self):
         outcome = self.board.outcome()
         if outcome is not None:
-            print(outcome.winner)
+            winner = outcome.winner
+            if (winner is False):
+                print("Black won the game!")
+            elif (winner is True):
+                print("White won the game!")
+            elif (winner is None):
+                print("The game ended in a draw!")
             self.playing = False
 
     def resetGame(self):

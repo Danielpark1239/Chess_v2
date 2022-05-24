@@ -115,8 +115,20 @@ class DisplayBoard:
 
         # Move is en passant
         elif (isEnPassant):
-            print("I need to implement en passant!")
+            # assert that target square is empty
+            assert(endIndices not in self.pieceMap)
 
+            pawn = self.pieceMap[startIndices]
+            pawn.update(endIndices[0], endIndices[1])
+
+            # delete captured pawn
+            if (endIndices[0] < startIndices[0]):
+                del self.pieceMap[(startIndices[0] - 1, startIndices[1])]
+            else:
+                del self.pieceMap[(startIndices[0] + 1, startIndices[1])]
+
+            self.pieceMap[endIndices] = pawn
+            del self.pieceMap[startIndices]
 
         # Move is a normal move
         else:

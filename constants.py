@@ -7,7 +7,7 @@ MIN_COMPUTER_ELO = 1350
 MAX_COMPUTER_ELO = 2850
 ELO_INCREMENT = 100
 STOCKFISH_PATH = "\Library\Frameworks\Python.framework\Versions\3.10\lib\python3.10\site-packages\stockfish"
-ENGINE_THINKING_TIME = 0.001
+ENGINE_THINKING_TIME = 1.0
 
 GAME_WIDTH = 1100
 GAME_HEIGHT = 800
@@ -23,5 +23,5 @@ DEFAULT_FENSTRING = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
 
 FPS = 60
 
-ONE_PLAYER_DEBUG = True
+ONE_PLAYER_DEBUG = False
 
