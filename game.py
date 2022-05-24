@@ -66,7 +66,7 @@ class Game:
                         # piece exists
                         if squareIndices in self.displayBoard.pieceMap:
                             piece = self.displayBoard.pieceMap[squareIndices]
-                            # it's your turn
+                            # it's your turn and your color piece
                             if self.turn and piece.isWhite() == self.player:
                                 self.heldPiece = piece
                                 self.heldPieceX = squareIndices[0]
@@ -81,19 +81,19 @@ class Game:
 
                         # if startSq = endSq, put down the piece
                         if startCoords != endCoords:
-                            self.returnPiece()
+                            move = chess.Move.from_uci(startCoords + endCoords)
+                            # play a move if destination square is valid
+                            if move in self.board.legal_moves:
+                                self.heldPiece = None
+                                self.heldPieceX = None
+                                self.heldPiceY = None
+                                self.displayBoard.movePiece(startCoords, endCoords)
+                                self.board.push(move)
+                                self.turn = False
+                            else:
+                                self.returnPiece()
 
-                        # play a move if destination square is valid
-                        move = chess.Move.from_uci(startCoords + endCoords)
-                        if move in self.board.legal_moves:
-                            self.heldPiece = None
-                            self.heldPieceX = None
-                            self.heldPiceY = None
-                            self.displayBoard.movePiece(startCoords, endCoords)
-                            self.board.push(move)
-                            self.turn = False
-
-                        # put down the piece if destination square is invalid
+                        # put down the piece otherwise
                         else:
                             self.returnPiece()
             
