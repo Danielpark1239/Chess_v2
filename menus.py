@@ -1,3 +1,4 @@
+from chess import Board
 import pygame as pg
 import pygame_menu as pgm
 from constants import *
@@ -28,9 +29,18 @@ class OnePlayerMenu:
             value_format = lambda x: str(int(x))
         )
         self.difficulty = DEFAULT_COMPUTER_ELO
+        self.menu.add.toggle_switch(
+            title='Play as white?', 
+            default=True,
+            onchange=self.selectColor
+        )
+        self.color = True #Play as White for True, Black for False
     
     def selectDifficulty(self, range_value):
         self.difficulty = int(range_value)
+    
+    def selectColor(self, current_state_value):
+        self.color = current_state_value
 
 class GameGUI:
     def __init__(self):
@@ -41,6 +51,22 @@ class GameGUI:
             position=(770, 80, False), 
             theme=pgm.themes.THEME_DARK
         )
+        # self.menu.add.button("Offer draw?", ) 
+        # self.menu.add.button('Resign?', )
+    # add settings for:
+    # flipping the Board
+    # playing as white or black
+    # timer?
+    # draw button
+    # resignation button
+    # game over screen
+    # back to main menu button
+    # move undo button?
+
+    # update gui and game loop
+
+
+    
 
 # takes a tuple board indices and a boolean color (True = white) as parameters
 class PromotionMenu:

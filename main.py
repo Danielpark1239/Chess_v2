@@ -18,8 +18,14 @@ main_menu.menu.add.button('1 Player', onePlayer_menu.menu)
 # One-player mode game loop
 def startOnePlayer():
     main_menu.menu.disable()
-    activeGame = game.OnePlayer(onePlayer_menu.difficulty, DEFAULT_FENSTRING)
+    activeGame = game.OnePlayer(
+        onePlayer_menu.difficulty, 
+        DEFAULT_FENSTRING,
+        onePlayer_menu.color
+    )
     activeGame.runGame()
+    pg.display.set_mode((MENU_WIDTH, MENU_HEIGHT))
+    main_menu.menu.enable()
 
 onePlayer_menu.menu.add.button('Start game!', startOnePlayer)
 onePlayer_menu.menu.add.button('Back', pgm.events.BACK)
@@ -28,6 +34,7 @@ main_menu.menu.add.button('Quit', pgm.events.EXIT)
 
 while main_menu.menu.is_enabled:
     main_menu.menu.mainloop(menuScreen)
+
 
 
 

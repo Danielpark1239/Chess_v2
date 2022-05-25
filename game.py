@@ -24,8 +24,6 @@ class Game:
         self.heldPieceY = None
 
         self.gui = menus.GameGUI() # Game GUI
-        self.gui.menu.add.button('Back', self.resetGame())
-        self.gui.menu.add.button("Draw?", lambda x: x^2) 
 
     # helper function that returns the indices of the board square 
     # at the coordinates x, y. Assumes that the coordinates are inside
@@ -195,36 +193,44 @@ class Game:
             elif (winner is None):
                 print("The game ended in a draw!")
             self.playing = False
-
-    def resetGame(self):
-        pass
-
-                        
+            self.running = False # For now: exits to menu once game terminates
 
 # Run the game against a computer
 class OnePlayer(Game):
-    def __init__(self, difficulty, FENstring):
+    def __init__(self, difficulty, FENstring, startColor):
         super().__init__(FENstring=FENstring)
         pg.display.set_caption("1p Chess Game")
         self.running = True
         self.playing = True
-        self.player = True # True if the player is white, false for black
+        self.player = startColor # True if the player is white, False for black
         if (self.player):
-            self.turn = True # True if it's the player's turn,
+            self.turn = True # True if it's the player's turn
         else:
             self.turn = False # False if it's the computer's turn
+            self.displayBoard.flipBoard()
 
         self.engine = chess.engine.SimpleEngine.popen_uci("stockfish")
-        self.engine.configure(
-            {"UCI_LimitStrength": True,
-             "UCI_Elo": difficulty}
-        )
+        self.engine.configure({
+            "UCI_LimitStrength": True,
+            "UCI_Elo": difficulty
+        })
+        self.difficulty = difficulty
         self.debug = ONE_PLAYER_DEBUG # if true, computer plays random moves
+
+        self.gui.menu.add.button(title="Main menu", action=pgm.events.EXIT)
+    
+    def resetGame(self):
+        self.playing = False
+    
+    def resetToMenu(self):
+        self.playing = False
+        self.running = False
+        self.gui.menu.disable()
 
     # game loop
     def runGame(self):
         while self.running:
-
+            
 
             while self.playing:
                 # check events
@@ -258,4 +264,5 @@ class OnePlayer(Game):
 
                 pg.display.update()
                 self.clock.tick(FPS)
-        return 0
+
+
