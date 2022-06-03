@@ -23,5 +23,5 @@ DEFAULT_FENSTRING = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
 
 FPS = 60
 
-ONE_PLAYER_DEBUG = False
+ONE_PLAYER_DEBUG = True
 
