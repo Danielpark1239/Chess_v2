@@ -266,3 +266,7 @@ class OnePlayer(Game):
                 self.clock.tick(FPS)
 
 
+# TO-DO:
+# Refactor Game class to only include features common to both 1P and 2P mode
+# Refactor 1P class to include all 1P-specific functionality
+# Create 2P class and hook it up to the main menu

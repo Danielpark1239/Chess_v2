@@ -27,6 +27,16 @@ def startOnePlayer():
     pg.display.set_mode((MENU_WIDTH, MENU_HEIGHT))
     main_menu.menu.enable()
 
+# Two-player mode game loop
+def startTwoPlayer():
+    main_menu.menu.disable()
+    activeGame = game.TwoPlayer(
+        ##### Add settings here
+    )
+    activeGame.runGame()
+    pg.display.set_mode((MENU_WIDTH, MENU_HEIGHT))
+    main_menu.menu.enable()
+
 onePlayer_menu.menu.add.button('Start game!', startOnePlayer)
 onePlayer_menu.menu.add.button('Back', pgm.events.BACK)
 main_menu.menu.add.button('2 Player (Local)', None)#twoPlayer)
