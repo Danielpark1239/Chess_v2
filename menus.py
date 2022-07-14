@@ -99,9 +99,9 @@ class PromotionMenu:
             
         else:
             # add images
-            BQ = self.menu.add.image("BoardBQ.png", scale=(0.1, 0.1))
+            BQ = self.menu.add.image("BoardBQ.png", scale=(0.05, 0.05))
             BR = self.menu.add.image("BoardBR.png", scale=(0.055, 0.05))
-            BB = self.menu.add.image("BoardBB.png", scale=(0.05, 0.05))
+            BB = self.menu.add.image("BoardBB.png", scale=(0.25, 0.25))
             BN = self.menu.add.image("BoardBN.png", scale=(0.055, 0.05))
             
             # set up the table
