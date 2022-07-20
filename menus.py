@@ -45,7 +45,7 @@ class OnePlayerMenu:
 class GameGUI:
     def __init__(self):
         self.menu = pgm.Menu(
-            "Settings", 
+            "Settings (WIP)", 
             GUI_WIDTH, 
             GUI_HEIGHT,
             position=(770, 80, False), 
@@ -54,19 +54,12 @@ class GameGUI:
         # self.menu.add.button("Offer draw?", ) 
         # self.menu.add.button('Resign?', )
     # add settings for:
-    # flipping the Board
-    # playing as white or black
     # timer?
     # draw button
     # resignation button
     # game over screen
     # back to main menu button
     # move undo button?
-
-    # update gui and game loop
-
-
-    
 
 # takes a tuple board indices and a boolean color (True = white) as parameters
 class PromotionMenu:
@@ -108,7 +101,8 @@ class PromotionMenu:
             self.table.add_row([BQ, BR])
             self.table.add_row([BB, BN])
    
-            
+class VictoryMenu:
+    pass
 
 
     
