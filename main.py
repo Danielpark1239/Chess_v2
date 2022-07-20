@@ -4,6 +4,7 @@ from constants import *
 import game
 import menus
 
+
 pg.init()
 menuScreen = pg.display.set_mode((MENU_WIDTH, MENU_HEIGHT))
 pg.display.set_caption("Play Chess")
