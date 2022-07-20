@@ -22,6 +22,7 @@ class Game:
         self.heldPiece = None
         self.heldPieceX = None # board indices of the held piece
         self.heldPieceY = None
+        self.winner = None
 
         self.gui = menus.GameGUI() # Game GUI
 
@@ -111,12 +112,15 @@ class Game:
             winner = outcome.winner
             if (winner is False):
                 print("Black won the game!")
+                self.winner = False
             elif (winner is True):
                 print("White won the game!")
+                self.winner = True
             elif (winner is None):
                 print("The game ended in a draw!")
+                self.winner = None
             self.playing = False
-            self.running = False # For now: exits to menu once game terminates
+            self.running = False # For now, exits once the game is finished
 
 # Run the game against a computer
 class OnePlayer(Game):
@@ -139,8 +143,6 @@ class OnePlayer(Game):
         })
         self.difficulty = difficulty
         self.debug = ONE_PLAYER_DEBUG # if true, computer plays random moves
-
-        self.gui.menu.add.button(title="Main menu", action=pgm.events.EXIT)
     
     def resetGame(self):
         self.playing = False
@@ -229,8 +231,8 @@ class OnePlayer(Game):
 
     # game loop
     def runGame(self):
+        self.gui.menu.enable()
         while self.running:
-            
             while self.playing:
                 # check events
                 self.checkEvents()
@@ -263,6 +265,8 @@ class OnePlayer(Game):
 
                 pg.display.update()
                 self.clock.tick(FPS)
+            self.gui.menu.disable()
+            
 
 # Run the game against another player (local)
 class TwoPlayer(Game):
@@ -272,8 +276,6 @@ class TwoPlayer(Game):
         self.running = True
         self.playing = True
         self.turn = True # True if white to move, False if black to move
-
-        self.gui.menu.add.button(title="Main menu", action=pgm.events.EXIT)
     
     def resetGame(self):
         self.playing = False
@@ -347,7 +349,6 @@ class TwoPlayer(Game):
     # game loop
     def runGame(self):
         while self.running:
-            
             while self.playing:
                 # check events
                 self.checkEvents()
@@ -382,8 +383,9 @@ class TwoPlayer(Game):
                 self.clock.tick(FPS)
 
 
-
 # TO-DO:
-# Refactor Game class to only include features common to both 1P and 2P mode
-# Refactor 1P class to include all 1P-specific functionality
-# Create 2P class and hook it up to the main menu
+# Refactor Game class to include all features common to both 1P and 2P mode
+# Cut down on duplicated code
+# Get the GUIs working in-game
+# Update readme and instructions so people can download and play
+# Add sounds, timer, move undo feature, etc.
